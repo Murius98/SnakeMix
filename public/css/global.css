@@ -2,20 +2,24 @@
     font-family: "Pixel Emulator";
     src: url("../fonts/Pixel Emulator.otf") format("opentype");
 }
+
 * {
     box-sizing: border-box;
 }
-body{
+
+body {
     margin: 0px;
     padding: 0px;
     font-family: "Pixel Emulator";
     background-color: black;
-    color:white;
+    color: white;
 }
-#header, #container{
+
+#header, #container {
     width: 100%;
     text-align: center;
 }
+
 #header {
     font-size: 24pt;
     font-weight: bold;
@@ -29,6 +33,39 @@ body{
 #container {
     padding: 50px 150px;
 }
-canvas{
+
+canvas {
     border: 14px solid #4f00ff;
+}
+
+.keys {
+    background: url(../img/keys.png);
+    height: 204px;
+    width: 306px;
+    margin: 30px auto;
+    font-size: 31pt;
+    color: #00ff5b;
+    text-shadow: 2px 2px #006528;
+    cursor:crosshair
+
+}
+.keys div{position:absolute;cursor:pointer;}
+#w {
+    margin-left: 105px;
+    margin-top: 5px;
+}
+
+#s {
+    margin-top: 106px;
+    margin-left: 124px;
+}
+
+#a {
+    margin-top: 106px;
+    margin-left: 22px;
+}
+
+#d {
+    margin-top: 106px;
+    margin-left: 227px;
 }

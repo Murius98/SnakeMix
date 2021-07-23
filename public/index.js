@@ -1,7 +1,10 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
-var keys = [ [38, 87], [40, 83], [37, 65], [39, 68] ];
-
+var keys = [  { key: "w", code: [38, 87] }, 
+              { key: "s", code: [40, 83] },
+              { key: "a", code: [37, 65] },
+              { key: "d", code: [39, 68] }]; //up, down, left, right
+var keyMap = ["w", "s", "a", "d"]
 class SnakePart {
   constructor(x, y) {
     this.x = x;
@@ -97,7 +100,6 @@ function isGameOver() {
 
       var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
       gradient.addColorStop("1.0", "red");
-      // Fill with gradient
       ctx.fillStyle = gradient;
 
       ctx.fillText("Game Over!", canvas.width / 24, canvas.height / 2);
@@ -153,6 +155,9 @@ function checkAppleCollision() {
     tailLength++;
     score++;
     gulpSound.play();
+    if(score > 2 && score % 3 == 0){
+      suffle(keys);
+    }
   }
 }
 
@@ -163,13 +168,15 @@ function suffle(keys) {
       keys[i] = keys[j];
       keys[j] = temp;
   }
+  for( var i = 0; i < keys.length; i++) {
+    document.getElementById(keyMap[i]).innerHTML = String(keys[i].key);
+  }
 }
 
 document.body.addEventListener("keydown", keyDown);
 
 function keyDown(event) {
-  //up
-  if (keys[0].findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[0].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
     //87 is w
     if (inputsYVelocity == 1) return;
     inputsYVelocity = -1;
@@ -177,7 +184,7 @@ function keyDown(event) {
   }
 
   //down
-  if (keys[1].findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[1].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
     // 83 is s
     if (inputsYVelocity == -1) return;
     inputsYVelocity = 1;
@@ -185,7 +192,7 @@ function keyDown(event) {
   }
 
   //left
-  if (keys[2].findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[2].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
     // 65 is a
     if (inputsXVelocity == 1) return;
     inputsYVelocity = 0;
@@ -193,14 +200,11 @@ function keyDown(event) {
   }
 
   //right
-  if (keys[3].findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[3].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
     //68 is d
     if (inputsXVelocity == -1) return;
     inputsYVelocity = 0;
     inputsXVelocity = 1;
-  }
-  if(score > 2 && score % 3 == 0){
-    suffle(keys);
   }
 }
 
