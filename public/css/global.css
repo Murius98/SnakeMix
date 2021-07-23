@@ -69,3 +69,30 @@ canvas {
     margin-top: 106px;
     margin-left: 227px;
 }
+.swal2-input{
+    color:black!important;
+}
+.user {
+    color: black;
+    padding: 10px;
+    display: table;
+    width: 100%;
+    background-color: white;
+}
+
+.title {
+    padding: 10px;
+    color: black;
+    background: #00ff4e;
+    border-bottom: 4px solid #4f00ff;
+    text-shadow: 1px 1px white;
+    font-size: 16pt;
+}
+
+.user-info {
+    float: left;
+}
+
+.user-score {
+    float: right;
+}

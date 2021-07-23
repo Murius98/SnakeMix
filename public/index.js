@@ -1,10 +1,14 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
+const db = firebase.firestore();
+
 var keys = [  { key: "w", code: [38, 87] }, 
               { key: "s", code: [40, 83] },
               { key: "a", code: [37, 65] },
               { key: "d", code: [39, 68] }]; //up, down, left, right
-var keyMap = ["w", "s", "a", "d"]
+
+var keyMap = [ "w", "s", "a", "d" ];
+
 class SnakePart {
   constructor(x, y) {
     this.x = x;
@@ -12,7 +16,7 @@ class SnakePart {
   }
 }
 
-let speed = 7;
+let speed = 5;
 
 let tileCount = 20;
 let tileSize = canvas.width / tileCount - 2;
@@ -31,9 +35,39 @@ let inputsYVelocity = 0;
 let xVelocity = 0;
 let yVelocity = 0;
 
-let score = 0;
+let score = 10;
 
 const gulpSound = new Audio("gulp.mp3");
+
+loadLeaderBoard();
+
+function loadLeaderBoard(){
+  db.collection('puntuaciones', (ref) => ref.orderBy('score', 'desc').limit(10)).snapshotChanges();
+  console.log("XD");
+}
+
+function saveScore(){
+  Swal.fire({
+    title: 'Registra tu puntuación (' + score + '):',
+    input: 'text',
+    inputPlaceholder: 'Ingresa tu nickname aquí',
+    inputAttributes: {
+      autocapitalize: 'off',
+      color: "black"
+    },
+    showCancelButton: true,
+    confirmButtonText: 'Guardar',
+    cancelButtonText: 'Cancelar',
+    showLoaderOnConfirm: true,
+    preConfirm: (nickname) => {
+      return db.collection('puntuaciones').add({username: nickname, score: score});
+    },
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire('¡Puntaje guardado!', 'La información se ha guardado con éxito, en caso de que tengas una puntuación alta, podrás observarla en la tabla de puntuaciones.', 'success');
+    }
+  })
+}
 
 //game loop
 function drawGame() {
@@ -93,19 +127,11 @@ function isGameOver() {
   if (gameOver) {
     ctx.fillStyle = "white";
     ctx.font = "50px Pixel Emulator";
-
-    if (gameOver) {
-      ctx.fillStyle = "white";
-      ctx.font = "50px Pixel Emulator";
-
-      var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
-      gradient.addColorStop("1.0", "red");
-      ctx.fillStyle = gradient;
-
-      ctx.fillText("Game Over!", canvas.width / 24, canvas.height / 2);
-    }
-
+    var gradient = ctx.createLinearGradient(0, 0, canvas.width, 0);
+    gradient.addColorStop("1.0", "red");
+    ctx.fillStyle = gradient;
     ctx.fillText("Game Over!", canvas.width / 24, canvas.height / 2);
+    saveScore();
   }
 
   return gameOver;
