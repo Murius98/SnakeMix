@@ -2,11 +2,16 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const db = firebase.firestore();
 
+var keys = [  { key: "w", code: [87] }, 
+              { key: "s", code: [83] },
+              { key: "a", code: [65] },
+              { key: "d", code: [68] }]; //up, down, left, right
+/*
 var keys = [  { key: "w", code: [38, 87] }, 
               { key: "s", code: [40, 83] },
               { key: "a", code: [37, 65] },
               { key: "d", code: [39, 68] }]; //up, down, left, right
-
+*/
 var keyMap = [ "w", "s", "a", "d" ];
 
 class SnakePart {
@@ -35,15 +40,26 @@ let inputsYVelocity = 0;
 let xVelocity = 0;
 let yVelocity = 0;
 
-let score = 10;
+let score = 0;
 
 const gulpSound = new Audio("gulp.mp3");
 
 loadLeaderBoard();
 
+var top = [];
+
 function loadLeaderBoard(){
-  db.collection('puntuaciones', (ref) => ref.orderBy('score', 'desc').limit(10)).snapshotChanges();
-  console.log("XD");
+  var html = "";
+  var count = 1;
+  db.collection('puntuaciones').orderBy('score', 'desc').limit(10).onSnapshot((snap) => {
+    snap.forEach((doc) => {
+      if(doc.data()['username'] == "")
+        html += '<div class="user"> <div class="user-info">' + count++ +'.- Sin nombre</div><div class="user-score">' + doc.data()['score'] + '</div></div>';
+      else
+        html += '<div class="user"> <div class="user-info">' + count++ +'.- ' + doc.data()['username'] + '</div><div class="user-score">' + doc.data()['score'] + '</div></div>';
+    })
+    document.getElementById("leaderboard").innerHTML = html;
+  });
 }
 
 function saveScore(){
