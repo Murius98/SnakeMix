@@ -181,7 +181,6 @@ document.body.addEventListener("keydown", keyDown);
 
 function keyDown(event) {
   if (keys[0].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
-    //87 is w
     if (inputsYVelocity == 1) return;
     inputsYVelocity = -1;
     inputsXVelocity = 0;
@@ -189,7 +188,6 @@ function keyDown(event) {
 
   //down
   if (keys[1].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
-    // 83 is s
     if (inputsYVelocity == -1) return;
     inputsYVelocity = 1;
     inputsXVelocity = 0;
@@ -197,7 +195,6 @@ function keyDown(event) {
 
   //left
   if (keys[2].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
-    // 65 is a
     if (inputsXVelocity == 1) return;
     inputsYVelocity = 0;
     inputsXVelocity = -1;
@@ -205,7 +202,6 @@ function keyDown(event) {
 
   //right
   if (keys[3].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
-    //68 is d
     if (inputsXVelocity == -1) return;
     inputsYVelocity = 0;
     inputsXVelocity = 1;
