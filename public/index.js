@@ -144,7 +144,11 @@ function changeSnakePosition() {
 }
 
 function drawApple() {
-  ctx.fillStyle = "red";
+  if(score > 1 && (score + 1) % 3 == 0){
+    ctx.fillStyle = "yellow";
+  }else{
+    ctx.fillStyle = "red";
+  }
   ctx.fillRect(appleX * tileCount, appleY * tileCount, tileSize, tileSize);
 }
 
