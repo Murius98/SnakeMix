@@ -10,6 +10,7 @@ body{
     padding: 0px;
     font-family: "Pixel Emulator";
     background-color: black;
+    color:white;
 }
 #header, #container{
     width: 100%;
