@@ -52,6 +52,8 @@ function loadLeaderBoard(){
   var html = "";
   var count = 1;
   db.collection('puntuaciones').orderBy('score', 'desc').limit(10).onSnapshot((snap) => {
+    html = "";
+    count = 1;
     snap.forEach((doc) => {
       if(doc.data()['username'] == "")
         html += '<div class="user"> <div class="user-info">' + count++ +'.- Sin nombre</div><div class="user-score">' + doc.data()['score'] + '</div></div>';
