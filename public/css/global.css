@@ -1,0 +1,33 @@
+@font-face {
+    font-family: "Pixel Emulator";
+    src: url("../fonts/Pixel Emulator.otf") format("opentype");
+}
+* {
+    box-sizing: border-box;
+}
+body{
+    margin: 0px;
+    padding: 0px;
+    font-family: "Pixel Emulator";
+    background-color: black;
+}
+#header, #container{
+    width: 100%;
+    text-align: center;
+}
+#header {
+    font-size: 24pt;
+    font-weight: bold;
+    padding: 15px;
+    color: #00ff4e;
+    text-shadow: 2px 2px #4f00ff;
+    border-bottom: 8px solid #00ff4e;
+    box-shadow: 0px 4px #4f00ff;
+}
+
+#container {
+    padding: 50px 150px;
+}
+canvas{
+    border: 14px solid #4f00ff;
+}
