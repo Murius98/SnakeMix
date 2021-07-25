@@ -13,10 +13,11 @@ body {
     font-family: "Pixel Emulator";
     background-color: black;
     color: white;
+    min-width: 750px;
 }
 
 #header, #container {
-    width: 100%;
+    min-width: 100%;
     text-align: center;
 }
 
