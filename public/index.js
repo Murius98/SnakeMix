@@ -2,10 +2,10 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const db = firebase.firestore();
 
-var keys = [  { key: "w", code: [87] }, 
-              { key: "s", code: [83] },
-              { key: "a", code: [65] },
-              { key: "d", code: [68] }]; //up, down, left, right
+var keys = [  { key: "w", code: 87 }, 
+              { key: "s", code: 83 },
+              { key: "a", code: 65 },
+              { key: "d", code: 68 }  ]; //up, down, left, right
 /*
 var keys = [  { key: "w", code: [38, 87] }, 
               { key: "s", code: [40, 83] },
@@ -224,28 +224,28 @@ function suffle(keys) {
 document.body.addEventListener("keydown", keyDown);
 
 function keyDown(event) {
-  if (keys[0].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[0].code === event.keyCode){
     if (inputsYVelocity == 1) return;
     inputsYVelocity = -1;
     inputsXVelocity = 0;
   }
 
   //down
-  if (keys[1].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[1].code === event.keyCode){
     if (inputsYVelocity == -1) return;
     inputsYVelocity = 1;
     inputsXVelocity = 0;
   }
 
   //left
-  if (keys[2].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[2].code === event.keyCode){
     if (inputsXVelocity == 1) return;
     inputsYVelocity = 0;
     inputsXVelocity = -1;
   }
 
   //right
-  if (keys[3].code.findIndex((keyTemp) => keyTemp === event.keyCode) > -1){
+  if (keys[3].code === event.keyCode){
     if (inputsXVelocity == -1) return;
     inputsYVelocity = 0;
     inputsXVelocity = 1;
