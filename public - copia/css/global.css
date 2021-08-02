@@ -35,6 +35,9 @@ body {
     padding: 50px 150px;
 }
 
+canvas {
+    border: 14px solid #4f00ff;
+}
 
 .keys {
     background: url(../img/keys.png);
