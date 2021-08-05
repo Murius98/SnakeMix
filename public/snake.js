@@ -18,6 +18,7 @@ let right = new Audio();
 let left = new Audio();
 let down = new Audio();
 let start = false;
+let onBody = false;
 
 dead.src = "audio/dead.mp3";
 eat.src = "audio/eat.mp3";
@@ -149,17 +150,32 @@ function draw(){
     if( d == "RIGHT") snakeX += box;
     if( d == "DOWN") snakeY += box;
     
+    console.log(snake);
     // if the snake eats the food
     if(snakeX == food.x && snakeY == food.y){
+        if(newTime > 0){
+          ctx.fillStyle = "red";
+          ctx.font = "25px Pixel Emulator";
+          ctx.fillText("-" + newTime,food.x,food.y);
+        }
         for(var i = 0; i < newTime; i++){
             snake.pop();
         }
         score++;
         eat.play();
-        food = {
-            x : Math.floor(Math.random()*17+1) * box,
-            y : Math.floor(Math.random()*15+3) * box
-        }
+        do {
+          food = {
+              x : Math.floor(Math.random()*17+1) * box,
+              y : Math.floor(Math.random()*15+3) * box
+          }
+          if(snake.findIndex((snake) => snake.x === food.x && snake.y === food.y) > 0){
+            console.log("yikes")
+            onBody = true;
+          }
+          else
+            onBody = false;
+
+        }while(onBody)
         if(newTime == 0){
             newTime = Math.round(5 + ((snake.length + 1)/4));
             timer();
