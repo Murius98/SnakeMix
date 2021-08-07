@@ -6,11 +6,19 @@
     <title>Snake Mix</title>
     <link rel="stylesheet" href="./css/global.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
-
 <body>
     <div id="header">
-        Snake Mix
+        <div class="logo">
+            Snake Mix
+        </div>
+        <div class="right-links">
+            <button style="display:none;" id="login-google" class="btn-default" type="button" onclick="googleSignIn()">
+                Ingresar con Gmail
+            </button>
+            <div id="user-profile" style="display:none;"></div>
+        </div>
     </div>
     <div id="container">
         <canvas id="snake" width="608" height="608"></canvas>
@@ -31,6 +39,7 @@
     <!-- The core Firebase JS SDK is always required and must be listed first -->
     <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
     <!-- TODO: Add SDKs for Firebase products that you want to use
         https://firebase.google.com/docs/web/setup#available-libraries -->
     <script>

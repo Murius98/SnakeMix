@@ -1,6 +1,23 @@
 const db = firebase.firestore();
+const afs = firebase.auth();
 const cvs = document.getElementById("snake");
 const ctx = cvs.getContext("2d");
+let provider = new firebase.default.auth.GoogleAuthProvider();
+let userProfile = document.getElementById("user-profile");
+let isLogged = false;
+let userInfo;
+
+const Toast = Swal.mixin({
+  toast: true,
+  position: 'top-end',
+  showConfirmButton: false,
+  timer: 1500,
+  timerProgressBar: true,
+  didOpen: (toast) => {
+    toast.addEventListener('mouseenter', Swal.stopTimer)
+    toast.addEventListener('mouseleave', Swal.resumeTimer)
+  }
+})
 
 const box = 32;
 
@@ -55,6 +72,81 @@ let d;
 
 document.addEventListener("keydown", direction);
 
+function checkAccount(){
+  afs.onAuthStateChanged((user) => {
+    if(user){
+      userInfo = user;
+      isLogged = true;
+      userProfile.innerHTML = '<div class="user-photo"><img src="' + user.photoURL + '"></div>';
+      userProfile.innerHTML += '<div class="user-desc">' + user.displayName + '<br/><a onclick="logOut()">Cerrar sesión<a></div>';
+      $("#user-profile").show('fast');
+      $("#login-google").hide('fast');
+    }else{
+      isLogged = false
+      userProfile.innertHTML = "";
+      $("#user-profile").hide('fast');
+      $("#login-google").show('fast');
+    }
+  });
+}
+
+function googleSignIn(){
+  firebase
+  .default.auth()
+    .signInWithPopup(provider)
+    .then((result) => {
+      /** @type {firebase.auth.OAuthCredential} */
+      var credential = result.credential;
+      // This gives you a Google Access Token. You can use it to access the Google & FB API.
+      //var token = credential.accessToken;
+      // The signed-in user info.
+      var user = result.user;
+      var userName = user.displayName.split(" ");
+      var iud = user.uid;
+      var userData;
+      if (result.additionalUserInfo.isNewUser) {
+        if(user){
+          Toast.fire({
+            icon: 'success',
+            title: '¡Te damos la bienvenida a SnakeMix ' + user.userName + '!'
+          })
+        }
+      } else {
+        if (user) {
+          Toast.fire({
+            icon: 'success',
+            title: '¡Bienvenido de vuelta :D!'
+          })
+        }
+      }
+    })
+    .catch((error) => {
+      // Handle Errors here.
+      var errorCode = error.code;
+      var errorMessage = error.message;
+      // The email of the user's account used.
+      var email = error.email;
+      // The firebase.auth.AuthCredential type that was used.
+      var credential = error.credential;
+      // ...
+          Toast.fire({
+            icon: 'error',
+            title: '¡Ha ocurrido un error, intentalo en unos momentos!'
+          })
+    });
+}
+
+function logOut(){
+  afs.signOut().then(() => {
+    Toast.fire({
+      icon: 'success',
+      title: 'Esperamos que regreses pronto :)'
+    })
+  }).catch((error) => {
+    console.error(error);
+  });
+}
+
 function loadLeaderBoard(){
     var html = "";
     var count = 1;
@@ -103,27 +195,43 @@ function collision(head,array){
 }
 
 function saveScore(){
+  if(isLogged){
     Swal.fire({
       title: 'Registra tu puntuación (' + score + '):',
       input: 'text',
-      inputPlaceholder: 'Ingresa tu nickname aquí',
+      inputPlaceholder: userInfo.displayName + '',
       inputAttributes: {
         autocapitalize: 'off',
-        color: "black"
+        color: "black",
       },
       showCancelButton: true,
       confirmButtonText: 'Guardar',
       cancelButtonText: 'Cancelar',
       showLoaderOnConfirm: true,
       preConfirm: (nickname) => {
-        return db.collection('puntuaciones').add({username: nickname, score: score});
+        return db.collection('puntuaciones').add({username: nickname, score: score, realname: userInfo.displayName, email: userInfo.email, id: userInfo.uid});
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('¡Puntaje guardado!', 'La información se ha guardado con éxito, en caso de que tengas una puntuación alta, podrás observarla en la tabla de puntuaciones.', 'success');
+        Swal.fire({
+          title: '¡Puntaje guardado!', 
+          text: 'La información se ha guardado con éxito, en caso de que tengas una puntuación alta, podrás observarla en la tabla de puntuaciones.', 
+          icon: 'success',
+          confirmButtonText: 'Volver a jugar'
+        });
+        reloadGame();
       }
     })
+  }else{
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: 'Obtuviste un total de ' + score + ' puntos, si quieres registrar tu puntaje deberás registrarte para la próxima!',
+      confirmButtonText: "Volver a jugar"
+    })
+    reloadGame();
   }
+}
 
 // draw everything to the canvas
 
@@ -150,7 +258,6 @@ function draw(){
     if( d == "RIGHT") snakeX += box;
     if( d == "DOWN") snakeY += box;
     
-    console.log(snake);
     // if the snake eats the food
     if(snakeX == food.x && snakeY == food.y){
         if(newTime > 0){
@@ -168,7 +275,7 @@ function draw(){
               x : Math.floor(Math.random()*17+1) * box,
               y : Math.floor(Math.random()*15+3) * box
           }
-          if(snake.findIndex((snakeTemp) => snakeTemp.x === food.x && snakeTemp.y === food.y) > 0)
+          if(snake.findIndex((snakeTemp) => {snakeTemp.x === food.x && snakeTemp.y === food.y}) > -1)
             onBody = true;
           else
             onBody = false;
@@ -196,6 +303,7 @@ function draw(){
     
     if(snakeX < box || snakeX > 17 * box || snakeY < 3*box || snakeY > 17*box || collision(newHead,snake)){
         clearInterval(game);
+        clearInterval(snakeGrow);
         dead.play();
         ctx.fillStyle = "white";
         ctx.font = "50px Pixel Emulator";
@@ -204,8 +312,8 @@ function draw(){
         ctx.fillStyle = gradient;
         ctx.fillText("Game Over!", cvs.width / 5, cvs.height / 2);
         saveScore();
-    }
-    snake.unshift(newHead);
+    }else
+      snake .unshift(newHead);
     
     ctx.fillStyle = "white";
     ctx.font = "38px Pixel Emulator";
@@ -248,8 +356,34 @@ function grow(){
         snake.unshift(newHead);
     }
 }
+
+function reloadGame(){
+  ctx.clearRect(0, 0, cvs.width, cvs.height);
+  start = false;
+  onBody = false;
+  snake = [];
+  speed = 1;
+  snake[0] = {
+      x : 9 * box,
+      y : 10 * box
+  };
+
+  food = {
+      x : Math.floor(Math.random()*17+1) * box,
+      y : Math.floor(Math.random()*15+3) * box
+  }
+  score = 0;
+  newTime = 0;
+
+  //control the snake
+  d = "";
+
+  game = setInterval(draw, 150 / speed);
+  snakeGrow = setInterval(grow, 1000);
+}
+
 let game = setInterval(draw, 150 / speed);
-let g = setInterval(grow, 1000);
+let snakeGrow = setInterval(grow, 1000);
 
-
+checkAccount();
 loadLeaderBoard();

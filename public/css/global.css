@@ -29,6 +29,16 @@ body {
     text-shadow: 2px 2px #4f00ff;
     border-bottom: 8px solid #00ff4e;
     box-shadow: 0px 4px #4f00ff;
+    display: grid;
+    place-items: center;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(1, 1fr);
+}
+
+.logo{
+    width:100%;
+    text-align: left;
+    line-height: 1;
 }
 
 #container {
@@ -93,4 +103,64 @@ body {
 
 .user-score {
     float: right;
+}
+
+#user-profile {
+    display: grid;
+    grid-auto-flow: column;
+    grid-gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+.user-desc a {
+    color: white;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.user-desc {
+    font-size: 18px;
+    text-align: left;
+    line-height: 1;
+}
+.user-photo {
+    display: flex;
+}
+.user-photo img {
+    width: 41px;
+    height: 41px;
+    border-radius: 100%;
+    border: 2px solid #ffffff;
+    box-shadow: 0px 0px 0px 2px #ff00e0;
+}
+.right-links {
+    display: grid;
+    grid-auto-flow: column;
+    place-items: center;
+    grid-gap: 14px;
+}
+
+button.btn-default {
+    border: 0;
+    padding: 14px;
+    font-family: 'Pixel Emulator';
+    border-radius: 5px;
+    background: #6577ff;
+    background: -moz-linear-gradient(top, #6577ff 0%, #9666ff 100%);
+    background: -webkit-linear-gradient(top, #6577ff 0%,#9666ff 100%);
+    background: linear-gradient(to bottom, #6577ff 0%,#9666ff 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6577ff', endColorstr='#9666ff',GradientType=0 );
+    box-shadow: 2px 2px 0px #00ff4e;
+    color: white;
+    text-shadow: 1px 1px black;
+    cursor: pointer;
+    outline: none;
+}
+
+button:hover, a:hover {
+    opacity: .90;
+}
+
+button:active, a:active {
+    opacity: .98;
 }
