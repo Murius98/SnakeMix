@@ -233,11 +233,15 @@ function draw(){
     
     ctx.drawImage(ground,0,0);
     for( let i = 0; i < snake.length ; i++){
-        ctx.fillStyle = "#00ff4e";
-        ctx.fillRect(snake[i].x,snake[i].y,box,box);
-        
-        ctx.strokeStyle = "#4f00ff";
-        ctx.strokeRect(snake[i].x,snake[i].y,box,box)
+        ctx.fillStyle = 'rgba(9, 255, 232, ' + (i + 1) / (snake.length) + ')';
+        if(i >= (snake.length - newTime)){
+          ctx.strokeStyle = "#0000001";
+        }else{
+          ctx.fillStyle = 'rgba(0, 255, 78, ' + (i + 1) / (snake.length - newTime) + ')';
+          ctx.strokeStyle = "#0000001";
+        }
+        ctx.fillRect(snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2));
+        ctx.strokeRect(snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2));
     }
 
     ctx.drawImage(foodImg, food.x, food.y);
@@ -269,11 +273,10 @@ function draw(){
               x : Math.floor(Math.random()*17+1) * box,
               y : Math.floor(Math.random()*15+3) * box
           }
-          if(snake.findIndex((snakeTemp) => {snakeTemp.x === food.x && snakeTemp.y === food.y}) > -1)
+          if(snake.findIndex((snakeTemp) => {snakeTemp.x == Math.round(food.x) && snakeTemp.y == Math.round(food.y)}) > -1)
             onBody = true;
           else
             onBody = false;
-
         }while(onBody)
         if(newTime == 0){
             newTime = Math.round(5 + ((snake.length + 1)/4));
