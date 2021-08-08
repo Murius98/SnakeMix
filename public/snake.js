@@ -108,7 +108,7 @@ function googleSignIn(){
         if(user){
           Toast.fire({
             icon: 'success',
-            title: '¡Te damos la bienvenida a SnakeMix ' + user.userName + '!'
+            title: '¡Te damos la bienvenida a SnakeMix ' + userName[0] + '!'
           })
         }
       } else {
@@ -196,32 +196,13 @@ function collision(head,array){
 
 function saveScore(){
   if(isLogged){
+    db.collection('puntuaciones').add({username: userInfo.displayName, score: score, email: userInfo.email, id: userInfo.uid});
     Swal.fire({
-      title: 'Registra tu puntuación (' + score + '):',
-      input: 'text',
-      inputPlaceholder: userInfo.displayName + '',
-      inputAttributes: {
-        autocapitalize: 'off',
-        color: "black",
-      },
-      showCancelButton: true,
-      confirmButtonText: 'Guardar',
-      cancelButtonText: 'Cancelar',
-      showLoaderOnConfirm: true,
-      preConfirm: (nickname) => {
-        return db.collection('puntuaciones').add({username: nickname, score: score, realname: userInfo.displayName, email: userInfo.email, id: userInfo.uid});
-      },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: '¡Puntaje guardado!', 
-          text: 'La información se ha guardado con éxito, en caso de que tengas una puntuación alta, podrás observarla en la tabla de puntuaciones.', 
-          icon: 'success',
-          confirmButtonText: 'Volver a jugar'
-        });
-        reloadGame();
-      }
-    })
+      title: 'Obtuviste un total de <b>' + score + '</b>', 
+      text: 'La información se ha guardado con éxito, en caso de que tengas una puntuación alta, podrás observarla en la tabla de puntuaciones.', 
+      icon: 'success',
+      confirmButtonText: 'Volver a jugar'
+    });
   }else{
     Swal.fire({
       icon: 'error',
@@ -229,11 +210,24 @@ function saveScore(){
       text: 'Obtuviste un total de ' + score + ' puntos, si quieres registrar tu puntaje deberás registrarte para la próxima!',
       confirmButtonText: "Volver a jugar"
     })
-    reloadGame();
   }
+  reloadGame();
 }
 
 // draw everything to the canvas
+function upKey(){
+  direction({keyCode: 87})
+}
+function downKey(){
+  direction({keyCode: 83})
+}
+function leftKey(){
+  direction({keyCode: 65})
+}
+
+function rightKey(){
+  direction({keyCode: 68})
+}
 
 function draw(){
     
