@@ -19,13 +19,19 @@ const Toast = Swal.mixin({
   }
 })
 
-const box = 32;
+const box = 16;
 
 const ground = new Image();
 ground.src = "img/bg.png";
 
 const foodImg = new Image();
 foodImg.src = "img/food.png";
+
+const headr = new Image();
+headr.src = "img/headr.png";
+
+const bodyr = new Image();
+bodyr.src = "img/bodyr.png";
 
 
 let dead = new Audio();
@@ -77,15 +83,15 @@ function checkAccount(){
     if(user){
       userInfo = user;
       isLogged = true;
-      userProfile.innerHTML = '<div class="user-photo"><img src="' + user.photoURL + '"></div>';
+      /*userProfile.innerHTML = '<div class="user-photo"><img src="' + user.photoURL + '"></div>';
       userProfile.innerHTML += '<div class="user-desc">' + user.displayName + '<br/><a onclick="logOut()">Cerrar sesión<a></div>';
       $("#user-profile").show('fast');
-      $("#login-google").hide('fast');
+      $("#login-google").hide('fast');*/
     }else{
       isLogged = false
-      userProfile.innertHTML = "";
+      /*userProfile.innertHTML = "";
       $("#user-profile").hide('fast');
-      $("#login-google").show('fast');
+      $("#login-google").show('fast');*/
     }
   });
 }
@@ -134,6 +140,25 @@ function googleSignIn(){
             title: '¡Ha ocurrido un error, intentalo en unos momentos!'
           })
     });
+}
+
+function puntuaciones(){
+  var htmlx = "";
+  var count = 1;
+  db.collection('puntuaciones').orderBy('score', 'desc').limit(10).onSnapshot((snap) => {
+    htmlx = "";
+    count = 1;
+    snap.forEach((doc) => {
+      if(doc.data()['username'] == "")
+        htmlx += '<div class="user"> <div class="user-info">' + count++ +'.- Sin nombre</div><div class="user-score">' + doc.data()['score'] + '</div></div>';
+      else
+        htmlx += '<div class="user"> <div class="user-info">' + count++ +'.- ' + doc.data()['username'] + '</div><div class="user-score">' + doc.data()['score'] + '</div></div>';
+    })
+    Swal.fire({
+      html: htmlx, 
+      confirmButtonText: 'Volver a jugar'
+    });
+  });
 }
 
 function logOut(){
@@ -233,15 +258,12 @@ function draw(){
     
     ctx.drawImage(ground,0,0);
     for( let i = 0; i < snake.length ; i++){
-        ctx.fillStyle = 'rgba(9, 255, 232, ' + (i + 1) / (snake.length) + ')';
-        if(i >= (snake.length - newTime)){
-          ctx.strokeStyle = "#0000001";
-        }else{
-          ctx.fillStyle = 'rgba(0, 255, 78, ' + (i + 1) / (snake.length - newTime) + ')';
-          ctx.strokeStyle = "#0000001";
-        }
-        ctx.fillRect(snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2));
-        ctx.strokeRect(snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2));
+      if(i == 0){
+        ctx.drawImage(headr, snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2))
+      }else{
+        ctx.drawImage(bodyr, snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2))
+
+      }
     }
 
     ctx.drawImage(foodImg, food.x, food.y);
@@ -260,7 +282,7 @@ function draw(){
     if(snakeX == food.x && snakeY == food.y){
         if(newTime > 0){
           ctx.fillStyle = "red";
-          ctx.font = "25px Pixel Emulator";
+          ctx.font = "12.5px Pixel Emulator";
           ctx.fillText("-" + newTime,food.x,food.y);
         }
         for(var i = 0; i < newTime; i++){
@@ -303,7 +325,7 @@ function draw(){
         clearInterval(snakeGrow);
         dead.play();
         ctx.fillStyle = "white";
-        ctx.font = "50px Pixel Emulator";
+        ctx.font = "25px Pixel Emulator";
         var gradient = ctx.createLinearGradient(0, 0, cvs.width, 0);
         gradient.addColorStop("1.0", "red");
         ctx.fillStyle = gradient;
@@ -313,7 +335,7 @@ function draw(){
       snake .unshift(newHead);
     
     ctx.fillStyle = "white";
-    ctx.font = "38px Pixel Emulator";
+    ctx.font = "14px Pixel Emulator";
     ctx.fillText(score,2*box,1.6*box);
 
     if (score > 5) {
@@ -330,7 +352,7 @@ function draw(){
     }
 
     ctx.fillStyle = "white";
-    ctx.font = "38px Pixel Emulator";
+    ctx.font = "14px Pixel Emulator";
     ctx.fillText(newTime, 17*box,1.6*box);
 }
 

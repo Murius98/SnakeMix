@@ -13,12 +13,17 @@ body {
     font-family: "Pixel Emulator";
     background-color: black;
     color: white;
-    min-width: 850px;
+    width: 320px;
+    height: 550px;
+    overflow: auto;
 }
 
 #header, #container {
     min-width: 100%;
     text-align: center;
+}
+#container{
+    padding: 8px
 }
 
 #header {
@@ -42,14 +47,15 @@ body {
 }
 
 #container {
-    padding: 50px 150px;
+    width: 100%;
 }
 
 .keys {
     background: url(../img/keys.png);
     height: 204px;
     width: 306px;
-    margin: 30px auto;
+    margin: 0px auto;
+    margin-top: 15px;
     cursor: crosshair;
     text-align: left;
 }
@@ -132,7 +138,7 @@ body {
 }
 
 .user-score {
-    float: right;
+    color: rgb(32, 245, 4);
 }
 
 #user-profile {

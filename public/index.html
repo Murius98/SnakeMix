@@ -4,58 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Mix</title>
+    
+    <link rel="stylesheet" href="css/menu.css">
+    
     <link rel="stylesheet" href="./css/global.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
+    <script src="js/config.js"></script>
 </head>
 <body>
-    <div id="header">
-        <div class="logo">
-            Snake Mix
-        </div>
-        <div class="right-links">
-            <button style="display:none;" id="login-google" class="btn-default" type="button" onclick="googleSignIn()">
-                Ingresar con Gmail
-            </button>
-            <div id="user-profile" style="display:none;"></div>
-        </div>
+    <div id="menu">
+        <p id="tittle">SNAKE MIX</p>
+        <input class="bMenu" type="button" value="jugar" id="play">
+        <input class="bMenu" type="button" value="login" id="login" onclick="googleSignIn()">
+        <input class="bMenu" type="button" value="Puntuaciones" id="puntuaciones" onclick="puntuaciones()">
     </div>
+    <script src="js/menu.js"></script>
     <div id="container">
-        <canvas id="snake" width="608" height="608"></canvas>
+        <canvas id="snake" width="304" height="304"></canvas>
         <div class="keys">
             <button id="w" onclick="upKey()">w</button>
             <button id="s" onclick="downKey()">s</button>
             <button id="a" onclick="leftKey()">a</button>
             <button id="d" onclick="rightKey()">d</button>
         </div>
-        <div id="box">
-            <div class="title">TOP 10 Mejores Puntuaciones</div>
-            <div id="leaderboard">
-                Cargando...
-            </div>
-        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
-    <!-- TODO: Add SDKs for Firebase products that you want to use
-        https://firebase.google.com/docs/web/setup#available-libraries -->
-    <script>
-    // Your web app's Firebase configuration
-    var firebaseConfig = {
-        apiKey: "AIzaSyB2IpeAPZ_9ooScAVMALM6Sjyb1SuTzgr4",
-        authDomain: "snake-mix.firebaseapp.com",
-        databaseURL: "https://snake-mix-default-rtdb.firebaseio.com",
-        projectId: "snake-mix",
-        storageBucket: "snake-mix.appspot.com",
-        messagingSenderId: "467767092848",
-        appId: "1:467767092848:web:afe72331c06ce3f52e36b5"
-    };
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
-    </script>
     <script src="snake.js"></script>
 </body>
 </html>

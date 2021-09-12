@@ -1,0 +1,25 @@
+#menu {
+    background: rgba(0, 0, 0, 0.8);
+    width: 100%;
+    height: 100%;
+    transition: 1s;
+    top: 0px;
+    position: fixed;
+    z-index: 99;
+}
+#tittle{
+    display: block;
+    text-align: center;
+    line-height: 1;
+    font-size: 50px;
+}
+.bMenu{
+    display: block;
+    margin : 0 auto;
+    width: 100%;
+    max-width: 305px;
+    height: 50px;
+    font-size: 30px;
+    border-radius: 10px;
+    font-family: "Pixel Emulator";
+}
