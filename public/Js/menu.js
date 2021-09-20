@@ -1,5 +1,4 @@
 document.getElementById("play").addEventListener("click", PlayButton);
-document.getElementById("login").addEventListener("click", LoginButton);
 
 function PlayButton()
 {

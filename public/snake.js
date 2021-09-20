@@ -3,7 +3,6 @@ const afs = firebase.auth();
 const cvs = document.getElementById("snake");
 const ctx = cvs.getContext("2d");
 let provider = new firebase.default.auth.GoogleAuthProvider();
-let userProfile = document.getElementById("user-profile");
 let isLogged = false;
 let userInfo;
 
@@ -108,7 +107,7 @@ function googleSignIn(){
       // The signed-in user info.
       var user = result.user;
       var userName = user.displayName.split(" ");
-      var iud = user.uid;
+      var uid = user.uid;
       var userData;
       if (result.additionalUserInfo.isNewUser) {
         if(user){
@@ -124,6 +123,15 @@ function googleSignIn(){
             title: '¡Bienvenido de vuelta :D!'
           })
         }
+      }
+      if(score > 0){
+        db.collection('puntuaciones').add({username: user.displayName, score: score, email: user.email, id: user.uid});
+        Swal.fire({
+          title: 'Obtuviste un total de <b>' + score + '</b>', 
+          text: 'La información se ha guardado con éxito, en caso de que tengas una puntuación alta, podrás observarla en la tabla de puntuaciones.', 
+          icon: 'success',
+          confirmButtonText: 'Volver a jugar'
+        });
       }
     })
     .catch((error) => {
@@ -232,10 +240,11 @@ function saveScore(){
     Swal.fire({
       icon: 'error',
       title: 'Oops...',
-      text: 'Obtuviste un total de ' + score + ' puntos, si quieres registrar tu puntaje deberás registrarte para la próxima!',
+      html: 'Obtuviste un total de ' + score + ' puntos, si quieres registrar tu puntaje inicia/registrate ahora!<br/><input class="bMenu" type="button" value="login" id="login" onclick="googleSignIn()">',
       confirmButtonText: "Volver a jugar"
     })
   }
+  this.puntuaciones();
   reloadGame();
 }
 
@@ -259,10 +268,10 @@ function draw(){
     ctx.drawImage(ground,0,0);
     for( let i = 0; i < snake.length ; i++){
       if(i == 0){
+        headr.style.transform = "rotate(180deg)";
         ctx.drawImage(headr, snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2))
       }else{
         ctx.drawImage(bodyr, snake[i].x + (i / snake.length) * 2,snake[i].y + (i / snake.length) * 2,box - ((i / snake.length) * 2 * 2),box - ((i / snake.length) * 2 * 2))
-
       }
     }
 
@@ -405,4 +414,3 @@ let game = setInterval(draw, 150 / speed);
 let snakeGrow = setInterval(grow, 1000);
 
 checkAccount();
-loadLeaderBoard();
