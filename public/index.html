@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake Mix</title>
     
+    <!-- meta keywords specific to the page -->
+    <meta name="description" content="La Pontificia Universidad Católica del Ecuador es una institución de educación superior y también la universidad privada más antigua de la República del Ecuador." />
+    <!-- common style sheets for every page -->
     <link rel="stylesheet" href="css/menu.css">
     
     <link rel="stylesheet" href="./css/global.css">
     <link rel="icon" type="image/png" href="img/favicon.png">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    
-    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-firestore.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
-    <script src="js/config.js"></script>
+    <meta name="msapplication-TileImage" content="https://www.puce.edu.ec/wp-content/uploads/2020/09/cropped-isotipo-PUCE-1-270x270.png" />
 </head>
 <body>
     <div id="menu">
@@ -23,7 +22,6 @@
         <input class="bMenu" type="button" value="login" id="login" onclick="googleSignIn()">
         <input class="bMenu" type="button" value="Puntuaciones" id="puntuaciones" onclick="puntuaciones()">
     </div>
-    <script src="js/menu.js"></script>
     <div id="container">
         <canvas id="snake" width="304" height="304"></canvas>
         <div class="keys">
@@ -33,7 +31,12 @@
             <button id="d" onclick="rightKey()">d</button>
         </div>
     </div>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-auth.js"></script>
+    <script src="js/config.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.19/dist/sweetalert2.all.min.js"></script>
+    <script src="js/menu.js"></script>
     <script src="snake.js"></script>
 </body>
 </html>
